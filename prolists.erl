@@ -183,3 +183,51 @@ problem18([Elem | Rest], 0, End, Result) ->
 	problem18(Rest, 0, End - 1, Result ++ [Elem]);
 problem18([_ | Rest], Start, End, []) ->
 	problem18(Rest, Start - 1, End, []).
+
+problem19(List, Shift) ->
+	problem19(List, Shift, []).
+problem19(Rest, 0, Ret) ->
+	Rest ++ Ret;
+problem19([S | Rest], Shift, Ret) ->
+	problem19(Rest, Shift - 1, Ret ++ [S]).
+
+problem20(List, Pos) ->
+	problem20(List, Pos, []).
+	% off-by-one
+problem20([Prev | Rest], 1, Head) ->
+	{Prev, Head ++ Rest};
+problem20([Prev | Rest], Pos, Head) ->
+	problem20(Rest, Pos - 1, Head ++ [Prev]).
+
+problem21(List, Pos, Elem) ->
+	problem21(List, Pos, Elem, []).
+% off-by-one
+problem21(Rest, 1, Elem, Head) ->
+	Head ++ [Elem] ++ Rest;
+problem21([Prev | Rest], Pos, Elem, Head) ->
+	problem21(Rest, Pos - 1, Elem, Head ++ [Prev]).
+
+% lists:seq(1,10).
+problem22(Begin, End) ->
+	problem22(Begin, End, []).
+problem22(End, End, Ret) ->
+	Ret ++ [End];
+problem22(Begin, End, Ret) ->
+	problem22(Begin + 1, End, Ret ++ [Begin]).
+
+problem23(List, Number) ->
+	{A1,A2,A3} = now(),
+	random:seed(A1, A2, A3),
+	problem23(List, Number, []).
+problem23(_List, 0, Ret) ->
+	Ret;
+problem23(List, Number, Ret) ->
+	Num = random:uniform(length(List)),
+	{Elem, Rest} = problem20(List, Num),
+	problem23(Rest, Number - 1, Ret ++ [Elem]).
+
+problem24(Begin, End, Number) ->
+	problem23(problem22(Begin, End), Number).
+
+problem25(List) ->
+	problem23(List, length(List)).
