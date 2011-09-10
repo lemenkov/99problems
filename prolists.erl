@@ -17,19 +17,13 @@ problem1([_|List]) ->
 problem2([Elem, _ | []]) ->
 	Elem;
 problem2([_, Next | Rest]) ->
-	problem2([Next | Rest]);
-problem2(_) ->
-	error.
+	problem2([Next | Rest]).
 
 % 1.03 (*) Find the K'th element of a list.
 %    The first element in the list is number 1.
 %    Example:
 %        ?- element_at(X,[a,b,c,d,e],3).
 %    X = c
-
-% off-by-one error
-problem3([], Number) when Number >= 1 ->
-	error;
 problem3([Elem | _], 1) ->
 	Elem;
 problem3([_| Rest], Number) ->
