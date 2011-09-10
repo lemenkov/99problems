@@ -184,6 +184,7 @@ problem18([Elem | Rest], 0, End, Result) ->
 problem18([_ | Rest], Start, End, []) ->
 	problem18(Rest, Start - 1, End, []).
 
+% 1.19 (**) Rotate a list N places to the left.
 problem19(List, Shift) ->
 	problem19(List, Shift, []).
 problem19(Rest, 0, Ret) ->
@@ -191,6 +192,7 @@ problem19(Rest, 0, Ret) ->
 problem19([S | Rest], Shift, Ret) ->
 	problem19(Rest, Shift - 1, Ret ++ [S]).
 
+% 1.20 (*) Remove the K'th element from a list.
 problem20(List, Pos) ->
 	problem20(List, Pos, []).
 	% off-by-one
@@ -199,6 +201,7 @@ problem20([Prev | Rest], 1, Head) ->
 problem20([Prev | Rest], Pos, Head) ->
 	problem20(Rest, Pos - 1, Head ++ [Prev]).
 
+% 1.21 (*) Insert an element at a given position into a list.
 problem21(List, Pos, Elem) ->
 	problem21(List, Pos, Elem, []).
 % off-by-one
@@ -207,6 +210,7 @@ problem21(Rest, 1, Elem, Head) ->
 problem21([Prev | Rest], Pos, Elem, Head) ->
 	problem21(Rest, Pos - 1, Elem, Head ++ [Prev]).
 
+% 1.22 (*) Create a list containing all integers within a given range.
 % lists:seq(1,10).
 problem22(Begin, End) ->
 	problem22(Begin, End, []).
@@ -215,6 +219,7 @@ problem22(End, End, Ret) ->
 problem22(Begin, End, Ret) ->
 	problem22(Begin + 1, End, Ret ++ [Begin]).
 
+% 1.23 (**) Extract a given number of randomly selected elements from a list.
 problem23(List, Number) ->
 	{A1,A2,A3} = now(),
 	random:seed(A1, A2, A3),
@@ -226,12 +231,15 @@ problem23(List, Number, Ret) ->
 	{Elem, Rest} = problem20(List, Num),
 	problem23(Rest, Number - 1, Ret ++ [Elem]).
 
+% 1.24 (*) Lotto: Draw N different random numbers from the set 1..M.
 problem24(Begin, End, Number) ->
 	problem23(problem22(Begin, End), Number).
 
+% 1.25 (*) Generate a random permutation of the elements of a list.
 problem25(List) ->
 	problem23(List, length(List)).
 
+% 1.26 (**) Generate the combinations of K distinct objects chosen from the N elements of a list
 problem26(1, List) ->
 	[ [X] || X <- List];
 problem26(K, List) ->
