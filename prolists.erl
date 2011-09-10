@@ -231,3 +231,8 @@ problem24(Begin, End, Number) ->
 
 problem25(List) ->
 	problem23(List, length(List)).
+
+problem26(1, List) ->
+	[ [X] || X <- List];
+problem26(K, List) ->
+	[ [X | Y] || X <- List, Y <- problem26(K - 1, List -- [X])].
