@@ -238,3 +238,7 @@ problem26(1, List) ->
 	[ [X] || X <- List];
 problem26(K, List) ->
 	[ [X | Y] || X <- List, Y <- problem26(K - 1, List -- [X])].
+
+% 1.27 (**) Group the elements of a set into disjoint subsets.
+problem27(List, [K0, K1, _]) ->
+	[[X, Y, List -- (X ++ Y)] || X <- problem26(K0, List), Y <- problem26(K1, List -- X)].
