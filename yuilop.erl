@@ -18,8 +18,8 @@ fun1([], 0) -> true;
 fun1([], _) -> false;
 fun1([Head | Tail], Acc) when
 	is_integer(Head),
-	Head < 65000,
-	Head > -65000 ->
+	Head =< 65000,
+	Head >= -65000 ->
 	fun1(Tail, Acc + Head).
 
 % Build a function that given a list of Integers pairs in the range
@@ -37,14 +37,12 @@ fun2(List) when is_list (List) ->
 	{X,Y}.
 
 len({X0, Y0}, {X1, Y1}) when
-	X0 < 65000,
-	X0 > -65000,
 	is_integer(X0),
 	is_integer(Y0),
 	is_integer(X1),
 	is_integer(Y1),
-	X0 < 65000, X0 > -65000,
-	Y0 < 65000, Y0 > -65000,
-	X1 < 65000, X1 > -65000,
-	Y1 < 65000, Y1 > -65000 ->
+	X0 =< 65000, X0 >= -65000,
+	Y0 =< 65000, Y0 >= -65000,
+	X1 =< 65000, X1 >= -65000,
+	Y1 =< 65000, Y1 >= -65000 ->
 		math:sqrt((X1 - X0)*(X1 - X0) + (Y1 - Y0)*(Y1 - Y0)).
