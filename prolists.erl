@@ -249,7 +249,7 @@ problem27(List, [K0, K1, _]) ->
 % themselves. The objective is to sort the elements of InList according to their
 % length. E.g. short lists first, longer lists later, or vice versa.
 
-problem28(ListOfLists) ->
+problem28a(ListOfLists) ->
 	[ Y || {_, Y} <- qsort([{length(X), X} || X <- ListOfLists]) ].
 
 qsort([]) ->
