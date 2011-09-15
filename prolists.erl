@@ -242,3 +242,41 @@ problem26(K, List) ->
 % 1.27 (**) Group the elements of a set into disjoint subsets.
 problem27(List, [K0, K1, _]) ->
 	[[X, Y, List -- (X ++ Y)] || X <- problem26(K0, List), Y <- problem26(K1, List -- X)].
+
+% 1.28 (**) Sorting a list of lists according to length of sublists
+
+% a) We suppose that a list (InList) contains elements that are lists
+% themselves. The objective is to sort the elements of InList according to their
+% length. E.g. short lists first, longer lists later, or vice versa.
+
+problem28(ListOfLists) ->
+	[ Y || {_, Y} <- qsort([{length(X), X} || X <- ListOfLists]) ].
+
+qsort([]) ->
+	[];
+qsort([Anything]) ->
+	[Anything];
+qsort(OrigList) ->
+	{Pivot, List} = problem20(OrigList, problem4(OrigList)),
+	qsort(Pivot, List, [], []).
+
+qsort(Pivot, [], Lesser, Greater) ->
+	qsort(Lesser) ++ [Pivot] ++ qsort(Greater);
+qsort(Pivot, [Head | Tail], Lesser, Greater) ->
+	case bigger(Head, Pivot) of
+		true ->
+			qsort(Pivot, Tail, Lesser, Greater ++ [Head]);
+		_ ->
+			qsort(Pivot, Tail, Lesser ++ [Head], Greater)
+	end.
+
+bigger(_, []) ->
+	true;
+bigger({Size0, _}, {Size1, _}) when Size0 > Size1 ->
+	true;
+bigger({Size0, _}, {Size1, _}) when Size0 < Size1 ->
+	false;
+bigger({_, List0}, {_, List1}) when List0 > List1 ->
+	true;
+bigger(_, _) ->
+	false.
