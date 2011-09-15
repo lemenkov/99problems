@@ -250,33 +250,65 @@ problem27(List, [K0, K1, _]) ->
 % length. E.g. short lists first, longer lists later, or vice versa.
 
 problem28a(ListOfLists) ->
-	[ Y || {_, Y} <- qsort([{length(X), X} || X <- ListOfLists]) ].
+	[ Y || {_, Y} <- qsort(fun biggera/2, [{length(X), X} || X <- ListOfLists]) ].
 
-qsort([]) ->
+biggera(_, []) ->
+	true;
+biggera({Size0, _}, {Size1, _}) when Size0 > Size1 ->
+	true;
+biggera({Size0, _}, {Size1, _}) when Size0 < Size1 ->
+	false;
+biggera({_, List0}, {_, List1}) when List0 > List1 ->
+	true;
+biggera(_, _) ->
+	false.
+
+% b) Again, we suppose that a list (InList) contains elements that are lists
+% themselves. But this time the objective is to sort the elements of InList
+% according to their length frequency; i.e. in the default, where sorting is
+% done ascendingly, lists with rare lengths are placed first, others with a
+% more frequent length come later.
+
+problem28b(ListOfLists) ->
+	[Y || {_, X} <- qsort(fun biggerb/2, [{{length(L0),X}, L0} || {X,L0} <- problem28b([{length(X), [X]} || X <- problem28a(ListOfLists)], [])]), Y <- X].
+
+problem28b([{Freq0, L0}, {Freq0, L1} | Rest], Folded) ->
+	problem28b([{Freq0, L0 ++ L1} | Rest], Folded);
+problem28b([{Freq0, L0}, {Freq1, L1} | Rest], Folded) when Freq0 /= Freq1 ->
+	problem28b([{Freq1, L1} | Rest], Folded ++ [{Freq0, L0}]);
+problem28b([{Freq0, L0}], Folded) ->
+	Folded ++ [{Freq0, L0}].
+
+biggerb(_, []) ->
+	true;
+biggerb({{Size0, _}, _}, {{Size1, _}, _}) when Size0 > Size1 ->
+	true;
+biggerb({{Size0, _}, _}, {{Size1, _}, _}) when Size0 < Size1 ->
+	false;
+biggerb({{_, Size0}, _}, {{_, Size1}, _}) when Size0 < Size1 ->
+	true;
+biggerb(_, _) ->
+	false.
+
+%%
+%% Provate fun
+%%
+
+qsort(_, []) ->
 	[];
-qsort([Anything]) ->
+qsort(_, [Anything]) ->
 	[Anything];
-qsort(OrigList) ->
+qsort(Comparator, OrigList) ->
 	{Pivot, List} = problem20(OrigList, problem4(OrigList)),
-	qsort(Pivot, List, [], []).
+	qsort(Comparator, Pivot, List, [], []).
 
-qsort(Pivot, [], Lesser, Greater) ->
-	qsort(Lesser) ++ [Pivot] ++ qsort(Greater);
-qsort(Pivot, [Head | Tail], Lesser, Greater) ->
-	case bigger(Head, Pivot) of
+qsort(Comparator, Pivot, [], Lesser, Greater) ->
+	qsort(Comparator, Lesser) ++ [Pivot] ++ qsort(Comparator, Greater);
+qsort(Comparator, Pivot, [Head | Tail], Lesser, Greater) ->
+	case Comparator(Head, Pivot) of
 		true ->
-			qsort(Pivot, Tail, Lesser, Greater ++ [Head]);
+			qsort(Comparator, Pivot, Tail, Lesser, Greater ++ [Head]);
 		_ ->
-			qsort(Pivot, Tail, Lesser ++ [Head], Greater)
+			qsort(Comparator, Pivot, Tail, Lesser ++ [Head], Greater)
 	end.
 
-bigger(_, []) ->
-	true;
-bigger({Size0, _}, {Size1, _}) when Size0 > Size1 ->
-	true;
-bigger({Size0, _}, {Size1, _}) when Size0 < Size1 ->
-	false;
-bigger({_, List0}, {_, List1}) when List0 > List1 ->
-	true;
-bigger(_, _) ->
-	false.
