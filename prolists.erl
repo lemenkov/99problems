@@ -291,7 +291,7 @@ biggerb(_, _) ->
 	false.
 
 %%
-%% Provate fun
+%% Private fun
 %%
 
 qsort(_, []) ->
