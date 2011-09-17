@@ -80,3 +80,10 @@ problem5(Number, IsPrime) ->
 		{true, true} -> [IsPrime, Number - IsPrime];
 		_ -> problem5(Number, IsPrime + 1)
 	end.
+
+% 2.06 (**) A list of Goldbach compositions.
+problem6a(Begin, End) when is_integer(Begin), is_integer(End), Begin =< End ->
+	[ {X, {Y, X - Y}} || X <- prolists:problem22(Begin, End), X rem 2 == 0, Y <- prolists:problem22(3, X), problem1(Y) == true, problem1(X - Y) == true].
+
+problem6b(Begin, End, Limit) when is_integer(Begin), is_integer(End), is_integer(Limit), Begin =< End ->
+	[ {X, {Y, X - Y}} || X <- prolists:problem22(Begin, End), X rem 2 == 0, Y <- prolists:problem22(3, X), problem1(Y) == true, problem1(X - Y) == true, Y >= Limit].
