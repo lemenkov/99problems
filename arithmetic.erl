@@ -70,3 +70,13 @@ swap([[Freq, Val] | Rest], Processed) ->
 % 2.04 (*) A list of prime numbers.
 problem4(Begin, End) when is_integer(Begin), is_integer(End), Begin =< End ->
 	[X || X <- prolists:problem22(Begin, End), problem1(X) == true].
+
+% 2.05 (**) Goldbach's conjecture.
+problem5(Number) when is_integer(Number), Number > 2, Number rem 2 == 0 ->
+	problem5(Number, 2).
+
+problem5(Number, IsPrime) ->
+	case {problem1(IsPrime), problem1(Number - IsPrime)} of
+		{true, true} -> [IsPrime, Number - IsPrime];
+		_ -> problem5(Number, IsPrime + 1)
+	end.
