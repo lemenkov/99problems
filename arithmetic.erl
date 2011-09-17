@@ -36,3 +36,24 @@ check_prime(IsPrime, Sqrt, Start) ->
 		0 -> false;
 		_ -> check_prime(IsPrime, Sqrt, Start + 1)
 	end.
+
+% 2.02 (**) Determine the prime factors of a given positive integer.
+problem2(1) ->
+	[1];
+problem2(Num) when is_integer(Num), Num > 1 ->
+	problem2(Num, 2, []).
+
+problem2(1, _, List) ->
+	List;
+problem2(Num, Divider, List) ->
+	case problem1(Divider) of
+		true ->
+			case Num rem Divider of
+				0 ->
+					problem2(round(Num / Divider), 2, List ++ [Divider]);
+				_ ->
+					problem2(Num, Divider + 1, List)
+			end;
+		false ->
+			problem2(Num, Divider + 1, List)
+	end.
