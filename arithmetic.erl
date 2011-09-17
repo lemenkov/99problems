@@ -57,3 +57,12 @@ problem2(Num, Divider, List) ->
 		false ->
 			problem2(Num, Divider + 1, List)
 	end.
+
+% 2.03 (**) Determine the prime factors of a given positive integer (2).
+problem3(Num) when is_integer(Num), Num > 0 ->
+	swap(prolists:problem10(problem2(Num)), []).
+
+swap([], Processed) ->
+	Processed;
+swap([[Freq, Val] | Rest], Processed) ->
+	swap(Rest, Processed ++ [[Val, Freq]]).
