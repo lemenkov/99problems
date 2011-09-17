@@ -66,3 +66,7 @@ swap([], Processed) ->
 	Processed;
 swap([[Freq, Val] | Rest], Processed) ->
 	swap(Rest, Processed ++ [[Val, Freq]]).
+
+% 2.04 (*) A list of prime numbers.
+problem4(Begin, End) when is_integer(Begin), is_integer(End), Begin =< End ->
+	[X || X <- prolists:problem22(Begin, End), problem1(X) == true].
