@@ -120,3 +120,21 @@ problem9(A, B, Phi) ->
 		false ->
 			problem9(A+1, B, Phi)
 	end.
+
+% 2.10 (**) Calculate Euler's totient function phi(m) (2).
+problem10(1) ->
+	1;
+problem10(Number) when is_integer(Number), Number > 1 ->
+	problem10(problem3(Number), 1).
+
+
+problem10([], Phi) ->
+	Phi;
+problem10([[P,M] | Rest], Phi) ->
+	problem10(Rest, Phi * (P - 1) * math:pow(P, M - 1)).
+
+% 2.11 (*) Compare the two methods of calculating Euler's totient function.
+problem11(Number) when is_integer(Number), Number > 0 ->
+	{First, _} = timer:tc(fun problem9/1, [Number]),
+	{Second, _} = timer:tc(fun problem10/1, [Number]),
+	{First, Second}.
