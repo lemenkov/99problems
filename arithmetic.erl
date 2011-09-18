@@ -104,3 +104,19 @@ problem8(A,B) when is_integer(A), is_integer(B), A > 0, B > 0 ->
 		1 -> true;
 		_ -> false
 	end.
+
+% 2.09 (**) Calculate Euler's totient function phi(m).
+problem9(1) ->
+	1;
+problem9(Number) when is_integer(Number), Number > 1 ->
+	problem9(1,Number,0).
+
+problem9(Number,Number,Phi) ->
+	Phi;
+problem9(A, B, Phi) ->
+	case problem8(A,B) of
+		true ->
+			problem9(A+1, B, Phi+1);
+		false ->
+			problem9(A+1, B, Phi)
+	end.
