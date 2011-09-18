@@ -97,3 +97,10 @@ problem7(A,B) when is_integer(A), is_integer(B), A > 0, B > 0 ->
 		_ ->
 			problem7(B, A rem B)
 	end.
+
+% 2.08 (*) Determine whether two positive integer numbers are coprime.
+problem8(A,B) when is_integer(A), is_integer(B), A > 0, B > 0 ->
+	case problem7(A,B) of
+		1 -> true;
+		_ -> false
+	end.
