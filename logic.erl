@@ -7,7 +7,11 @@
 % 3.01 (**) Truth tables for logical expressions.
 %	table(A,B,and(A,or(A,B))).
 problem1() ->
-	[io:format("~p ~p \t ~p~n", [X,Y,pred_and(X,pred_or(X,Y))]) || X <- [false, true], Y <- [false, true]].
+	[io:format("~p\t~p\t\t~p~n", [X,Y,pred_and(X,pred_or(X,Y))]) || X <- [false, true], Y <- [false, true]],
+	io:format("~n~n"),
+	[io:format("~p\t~p\t\t~p~n", [X,Y,pred_and(X,pred_or(X,pred_not(Y)))]) || X <- [false, true], Y <- [false, true]],
+	io:format("~n~n"),
+	ok.
 
 %%
 %% Private fun
