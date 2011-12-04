@@ -11,15 +11,30 @@
 % Example:
 % [0, 1, 2, -3] returns true. As 1+2+(-3)==0.
 % [1, 2, 3, -8] returns false. As no subset summed is equal 0.
+% [1, 4, 5, 2, -3] returns true.
+
+% To be honest if we consider more specific dataset we could try to play with
+% different approaches (analyse the entire set for non-negative, check for
+% magnitudes of negatives, check for zero element etc) thus removing some sets
+% from further analysis.
+
+% The straitforward solution is to try each combination of K elements
+% from L = length(List), with increasing K for each next round
 
 fun1(List) when is_list (List) ->
-	fun1(List, 0).
-fun1([], 0) -> true;
-fun1([], _) -> false;
-fun1([Head | Tail], Acc) when
-	is_integer(Head),
-	-65000 =< Head, Head =< 65000 ->
-	fun1(Tail, Acc + Head).
+	Length = length(List),
+	fun1(1, Length, List).
+fun1(K, L, List) ->
+	case lists:any(fun(X) -> 0 == lists:foldl(fun erlang:'+'/2, 0, X) end, perm(K, List)) of
+		true -> true;
+		false when K == L -> false;
+		false -> fun1(K+1, L, List)
+	end.
+
+perm(1, List) ->
+	[[X] || X <- List];
+perm(K, List) ->
+	[[X | Y] || X <- List, Y <- perm(K - 1, List -- [X])].
 
 % Build a function that given a list of Integers pairs in the range
 % [-65000,65000], that represents {X, Y} Coordinates in a Plane. The function
