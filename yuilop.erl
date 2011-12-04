@@ -44,10 +44,39 @@ perm(K, List) ->
 % [{0,0}, {1,20}, {5, 2}] returns [{0,0}, {5, 2}]
 % [{-10,10}, {1,5}, {4, 3}] returns [{1,5}, {4, 3}]
 
+% Straightforward solution - just create a list from every possible pair...
+
+% Consider the entire array of possible pairs as a matrix, e.g. if the initial
+% set is [X1, X2, X3, X4] then the resulting matrix will be
+%
+% || {X1, X1}  {X1, X2}  {X1, X3}  {X1, X4} ||
+% || {X2, X1}  {X2, X2}  {X2, X3}  {X2, X4} ||
+% || {X3, X1}  {X3, X2}  {X3, X3}  {X3, X4} ||
+% || {X4, X1}  {X4, X2}  {X4, X3}  {X4, X4} ||
+%
+% We need only pairs above the main diagonal, e.g.
+%
+% || --------  {X1, X2}  {X1, X3}  {X1, X4} ||
+% || --------  --------  {X2, X3}  {X2, X4} ||
+% || --------  --------  --------  {X3, X4} ||
+% || --------  --------  --------  -------- ||
+%
+% because we don't care about the order in each pair (the distance between X1
+% and X2 is equal to the distance between X2 and X1) and we don't case about
+% main diagonal (it's pointless to calculate distance from X1 to X1)
+
+% How to test:
+% List = [{X,Y} || X <- lists:seq(1,40), Y <- lists:seq(1,40)].
+% timer:tc(yuilop, fun2, [List]).
+
 fun2(List) when is_list (List) ->
-	[{_, X, Y} | _ ] = lists:sort(
-		[ {len(X,Y), X, Y} || X <- List, Y <- List -- [X] ]
-	),
+	fun2([], List).
+fun2(Ret, [Head | Tail]) ->
+	Ret0 = [{Head, Y} || Y <- Tail],
+	fun2(Ret0 ++ Ret, Tail);
+% ...then compute distance for each pair and find minimal one.
+fun2(Ret, []) ->
+	{_, X, Y} = lists:min([{len(X,Y), X, Y} || {X,Y} <- Ret]),
 	{X,Y}.
 
 len({X0, Y0}, {X1, Y1}) when
