@@ -27,10 +27,7 @@ problem1(IsPrime) when is_integer(IsPrime) ->
 	end.
 
 check_prime(IsPrime, Sqrt, Sqrt) ->
-	case Sqrt * Sqrt of
-		IsPrime -> false;
-		_ -> true
-	end;
+	not (Sqrt * Sqrt == IsPrime);
 check_prime(IsPrime, Sqrt, Start) ->
 	case IsPrime rem Start of
 		0 -> false;
@@ -100,10 +97,7 @@ problem7(A,B) when is_integer(A), is_integer(B), A > 0, B > 0 ->
 
 % 2.08 (*) Determine whether two positive integer numbers are coprime.
 problem8(A,B) when is_integer(A), is_integer(B), A > 0, B > 0 ->
-	case problem7(A,B) of
-		1 -> true;
-		_ -> false
-	end.
+	problem7(A,B) == 1.
 
 % 2.09 (**) Calculate Euler's totient function phi(m).
 problem9(1) ->
