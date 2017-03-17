@@ -135,6 +135,7 @@ problem13([Elem | Rest], [Something | _] = SomeList, Result) ->
 	problem13(Rest, [Elem], Result ++ [[length(SomeList), Something]]).
 
 % 1.14 (*) Duplicate the elements of a list.
+% [ X || Y <- List, X <- [Y,Y]]
 problem14(List) when is_list(List) ->
 	problem14(List, []).
 problem14([], Result) ->
